@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHANTOM.LOL | Ultimate 100% Working Edition</title>
+    <style>
+        :root {
+            --bg-color: #010103;
+            --panel-bg: rgba(10, 6, 18, 0.98);
+            --primary: #9333ea;
+            --primary-glow: #c084fc;
+            --accent: #10b981;
+            --cyan: #06b6d4;
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+            --border: rgba(16, 185, 129, 0.4);
+            --success: #10b981;
+            --error: #ef4444;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body { background: var(--bg-color); color: var(--text-main); min-height: 100vh; padding-bottom: 95px; overflow-x: hidden; }
+
+        #canvas-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.3; }
+
+        /* CONTAINER & TABS */
+        .container { max-width: 600px; margin: 20px auto; padding: 15px; }
+        .tab-content { display: none; animation: fadeIn 0.3s ease-in-out; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+        .header {
+            background: var(--panel-bg); border: 1px solid var(--border);
+            border-radius: 18px; padding: 22px; text-align: center;
+            box-shadow: 0 0 40px rgba(16, 185, 129, 0.2); margin-bottom: 20px;
+            backdrop-filter: blur(15px);
+        }
+        .header h1 {
+            font-size: 2.1rem; font-weight: 900;
+            background: linear-gradient(135deg, #fff, var(--success));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            letter-spacing: 3px;
+        }
+        .badge-stealth {
+            display: inline-block; background: rgba(16, 185, 129, 0.15); color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.4); font-size: 0.75rem; font-weight: bold;
+            padding: 4px 14px; border-radius: 20px; margin-top: 8px; text-transform: uppercase;
+            box-shadow: 0 0 18px rgba(16, 185, 129, 0.3);
+            animation: pulseGlow 1.5s infinite alternate;
+        }
+        @keyframes pulseGlow { from { box-shadow: 0 0 10px rgba(16,185,129,0.2); } to { box-shadow: 0 0 30px rgba(16,185,129,0.6); } }
+
+        .card {
+            background: var(--panel-bg); border: 1px solid var(--border);
+            border-radius: 18px; padding: 20px; box-shadow: 0 12px 35px rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(15px); margin-bottom: 18px;
+        }
+        .card h2 {
+            font-size: 1.05rem; color: var(--success); margin-bottom: 16px;
+            border-bottom: 1px solid rgba(16, 185, 129, 0.3); padding-bottom: 10px;
+            text-transform: uppercase; display: flex; justify-content: space-between; align-items: center;
+        }
+
+        /* TOGGLE SWITCHES */
+        .toggle-group { display: flex; justify-content: space-between; align-items: center; margin: 15px 0; }
+        .toggle-group span { font-size: 0.9rem; font-weight: 500; }
+        .switch { position: relative; display: inline-block; width: 48px; height: 26px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #1a1726; transition: .3s; border-radius: 26px; border: 1px solid rgba(255,255,255,0.15);
+        }
+        .slider:before {
+            position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 2px;
+            background-color: white; transition: .3s; border-radius: 50%;
+        }
+        input:checked + .slider { background-color: var(--success); border-color: #6ee7b7; box-shadow: 0 0 15px var(--success); }
+        input:checked + .slider:before { transform: translateX(22px); }
+
+        .control-group { margin: 16px 0; }
+        .control-group label { display: block; font-size: 0.85rem; color: var(--text-dim); margin-bottom: 8px; }
+        select {
+            width: 100%; padding: 12px; background: #120e21; color: white;
+            border: 1px solid var(--border); border-radius: 10px; outline: none; font-size: 0.9rem;
+        }
+        .slider-container { display: flex; align-items: center; gap: 14px; }
+        input[type="range"] { flex: 1; accent-color: var(--success); height: 6px; background: #1e1b2e; border-radius: 3px; }
+
+        .btn {
+            width: 100%; padding: 14px; background: linear-gradient(135deg, var(--success), #059669);
+            border: none; border-radius: 10px; color: white; font-weight: bold; font-size: 0.95rem;
+            cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
+            box-shadow: 0 0 22px rgba(16, 185, 129, 0.4); transition: all 0.3s;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 0 38px var(--success); }
+
+        .stealth-box {
+            background: rgba(0,0,0,0.75); border: 1px solid var(--success); border-radius: 12px;
+            padding: 14px; text-align: center; margin-bottom: 16px;
+            box-shadow: inset 0 0 25px rgba(16,185,129,0.2);
+        }
+        .stealth-status { font-family: monospace; color: var(--success); font-size: 1.1rem; font-weight: bold; letter-spacing: 1px; text-shadow: 0 0 12px rgba(16,185,129,0.6); }
+
+        #terminal-log {
+            background: #010103; border: 1px solid rgba(16, 185, 129, 0.4); border-radius: 10px;
+            padding: 12px; font-family: monospace; font-size: 0.78rem; height: 160px;
+            overflow-y: auto; color: #34d399; margin-top: 12px;
+            box-shadow: inset 0 0 20px rgba(
